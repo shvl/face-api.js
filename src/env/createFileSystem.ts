@@ -8,7 +8,7 @@ export function createFileSystem(fs?: any): FileSystem {
     try {
       fs = require('fs')
     } catch (err) {
-      requireFsError = err.toString()
+      requireFsError = (err as Error).toString()
     }
   }
 

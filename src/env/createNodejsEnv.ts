@@ -2,7 +2,7 @@ import { createFileSystem } from './createFileSystem';
 import { Environment } from './types';
 
 export function createNodejsEnv(): Environment {
-
+  //@ts-ignore
   const Canvas = global['Canvas'] || global['HTMLCanvasElement']
   const Image = global['Image'] || global['HTMLImageElement']
 

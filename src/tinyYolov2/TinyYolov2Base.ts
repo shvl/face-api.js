@@ -208,12 +208,12 @@ export class TinyYolov2Base extends NeuralNetwork<TinyYolov2NetParams> {
       for (let col = 0; col < numCells; col ++) {
         for (let anchor = 0; anchor < numBoxes; anchor ++) {
 
-          const score = sigmoid(scoresData[row][col][anchor][0]);
+          const score = sigmoid((scoresData as number[][][][])[row][col][anchor][0]);
           if (!scoreThreshold || score > scoreThreshold) {
-            const ctX = ((col + sigmoid(boxesData[row][col][anchor][0])) / numCells) * correctionFactorX
-            const ctY = ((row + sigmoid(boxesData[row][col][anchor][1])) / numCells) * correctionFactorY
-            const width = ((Math.exp(boxesData[row][col][anchor][2]) * this.config.anchors[anchor].x) / numCells) * correctionFactorX
-            const height = ((Math.exp(boxesData[row][col][anchor][3]) * this.config.anchors[anchor].y) / numCells) * correctionFactorY
+            const ctX = ((col + sigmoid((boxesData as number[][][][])[row][col][anchor][0])) / numCells) * correctionFactorX
+            const ctY = ((row + sigmoid((boxesData as number[][][][])[row][col][anchor][1])) / numCells) * correctionFactorY
+            const width = ((Math.exp((boxesData as number[][][][])[row][col][anchor][2]) * this.config.anchors[anchor].x) / numCells) * correctionFactorX
+            const height = ((Math.exp((boxesData as number[][][][])[row][col][anchor][3]) * this.config.anchors[anchor].y) / numCells) * correctionFactorY
 
             const x = (ctX - (width / 2))
             const y = (ctY - (height / 2))

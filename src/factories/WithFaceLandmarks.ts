@@ -14,9 +14,9 @@ export type WithFaceLandmarks<
 
 export function isWithFaceLandmarks(obj: any): obj is WithFaceLandmarks<WithFaceDetection<{}>, FaceLandmarks> {
   return isWithFaceDetection(obj)
-    && obj['landmarks'] instanceof FaceLandmarks
-    && obj['unshiftedLandmarks'] instanceof FaceLandmarks
-    && obj['alignedRect'] instanceof FaceDetection
+    && (obj as { detection: FaceDetection; landmarks: FaceLandmarks; unshiftedLandmarks: FaceLandmarks; alignedRect: FaceDetection; })['landmarks'] instanceof FaceLandmarks
+    && (obj as { detection: FaceDetection; landmarks: FaceLandmarks; unshiftedLandmarks: FaceLandmarks; alignedRect: FaceDetection; })['unshiftedLandmarks'] instanceof FaceLandmarks
+    && (obj as { detection: FaceDetection; landmarks: FaceLandmarks; unshiftedLandmarks: FaceLandmarks; alignedRect: FaceDetection; })['alignedRect'] instanceof FaceDetection
 }
 
 export function extendWithFaceLandmarks<
