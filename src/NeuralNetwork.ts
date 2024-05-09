@@ -5,6 +5,10 @@ import { getModelUris } from './common/getModelUris';
 import { loadWeightMap } from './dom';
 import { env } from './env';
 
+interface FileToModel {
+  [key: string]: Float32Array;
+}
+
 export abstract class NeuralNetwork<TNetParams> {
 
   protected _params: TNetParams | undefined = undefined
@@ -110,6 +114,24 @@ export abstract class NeuralNetwork<TNetParams> {
     const weightMap = await loadWeights(manifest, modelBaseUri)
 
     this.loadFromWeightMap(weightMap)
+  }
+
+  
+  public async loadFromBuffer(manifest: any, weightMapMapper: FileToModel): Promise<void> {
+    const fetchWeightsFromDisk = (filePaths: Array<string>) => {
+      return Promise.all(filePaths.map((filePath: string) => {
+        const key = filePath.split('/').pop() || '';
+        if (!(key in weightMapMapper)) {
+          throw new Error(`loadWeights - missing weight file for ${key}`);
+        }
+        return weightMapMapper[key];
+      }));
+      }
+      const loadWeights = tf.io.weightsLoaderFactory(fetchWeightsFromDisk)
+  
+      const weightMap = await loadWeights(manifest, '')
+  
+      this.loadFromWeightMap(weightMap)
   }
 
   public loadFromWeightMap(weightMap: tf.NamedTensorMap) {
